@@ -1,0 +1,28 @@
+{
+  "name": "saddle-subgraph",
+  "license": "GPLv3",
+  "scripts": {
+    "lint": "eslint --max-warnings=0 src/ && prettier --list-different src/**/*.ts",
+    "lint:fix": "eslint src/ --fix && prettier --write src/**/*.ts",
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ saddle-finance/saddle",
+    "create-local": "graph create --node http://localhost:8020/ saddle-finance/saddle",
+    "remove-local": "graph remove --node http://localhost:8020/ saddle-finance/saddle",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 saddle-finance/saddle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saddle-finance/saddle-subgraph.git"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "0.20.0",
+    "@graphprotocol/graph-ts": "0.20.0",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "prettier": "1.19.1",
+    "typescript": "^4.2.3"
+  }
+}

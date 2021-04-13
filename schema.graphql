@@ -1,0 +1,186 @@
+type SystemInfo @entity {
+  id: ID!
+
+  exchangeCount: BigInt!
+  swapCount: BigInt!
+  tokenCount: BigInt!
+
+  updated: BigInt!
+  updatedAtBlock: BigInt!
+  updatedAtTransaction: Bytes!
+}
+
+type Swap @entity {
+  id: ID!
+
+  # swap address
+  address: Bytes!
+
+  # number of tokens supported
+  numTokens: Int!
+
+  # supported tokens
+  tokens: [Token!]!
+
+  # token balances
+  balances: [BigInt!]!
+
+  # liquidity provider token
+  lpToken: Bytes!
+
+  # amplification coefficient
+  A: BigInt!
+
+  swapFee: BigInt!
+  adminFee: BigInt!
+  withdrawFee: BigInt!
+
+  virtualPrice: BigInt!
+
+  # owner address
+  owner: Bytes!
+
+  events: [SwapEvent!] @derivedFrom(field: "swap")
+
+  exchanges: [Exchange!] @derivedFrom(field: "swap")
+}
+
+interface SwapEvent @entity {
+  swap: Swap!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type NewAdminFeeEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  newFee: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type NewSwapFeeEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  newFee: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type NewWithdrawFeeEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  newFee: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type RampAEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  oldA: BigInt!
+  newA: BigInt!
+  initialTime: BigInt!
+  futureTime: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type StopRampAEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  currentA: BigInt!
+  time: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type AddLiquidityEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  provider: Bytes!
+  tokenAmounts: [BigInt!]!
+  fees: [BigInt!]!
+  invariant: BigInt
+  lpTokenSupply: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type RemoveLiquidityEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  provider: Bytes!
+  tokenAmounts: [BigInt!]!
+  fees: [BigInt!]
+  invariant: BigInt
+  lpTokenSupply: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type FlashLoanEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  receiver: Bytes!
+  tokenIndex: Int!
+  amount: BigInt!
+  amountFee: BigInt!
+  protocolFee: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+interface Exchange {
+  swap: Swap!
+
+  buyer: Bytes!
+  soldId: BigInt!
+  tokensSold: BigInt!
+  boughtId: BigInt!
+  tokensBought: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type TokenExchange @entity {
+  id: ID!
+  swap: Swap!
+  buyer: Bytes!
+  boughtId: BigInt!
+  tokensBought: BigInt!
+  soldId: BigInt!
+  tokensSold: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type Token @entity {
+  id: ID!
+  address: Bytes!
+  decimals: BigInt!
+  name: String
+  symbol: String
+}
