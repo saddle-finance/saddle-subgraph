@@ -163,7 +163,7 @@ interface Exchange {
   transaction: Bytes!
 }
 
-type TokenExchange @entity {
+type TokenExchange implements Exchange @entity {
   id: ID!
   swap: Swap!
   buyer: Bytes!
