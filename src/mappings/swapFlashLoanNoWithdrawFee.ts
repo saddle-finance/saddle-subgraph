@@ -20,7 +20,7 @@ import {
   StopRampAEvent,
   TokenExchange,
 } from "../../generated/schema"
-import { Address, BigInt, log } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import {
   getBalancesNoWithdrawFee,
   getOrCreateSwapNoWithdrawFee,

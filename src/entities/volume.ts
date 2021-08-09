@@ -8,6 +8,8 @@ import {
 import { BigInt } from "@graphprotocol/graph-ts"
 import { decimal } from "@protofire/subgraph-toolkit"
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 export function getHourlyTradeVolume(
   swap: Swap,
   timestamp: BigInt,
