@@ -43,6 +43,42 @@ type Swap @entity {
   events: [SwapEvent!] @derivedFrom(field: "swap")
 
   exchanges: [Exchange!] @derivedFrom(field: "swap")
+
+  # cumulative hourly trade volume
+  hourlyVolumes: [HourlyVolume!] @derivedFrom(field: "swap")
+
+  # cumulative daily trade volume
+  dailyVolumes: [DailyVolume!] @derivedFrom(field: "swap")
+
+  # cumulative weekly trade volume
+  weeklyVolumes: [WeeklyVolume!] @derivedFrom(field: "swap")
+}
+
+interface TradeVolume @entity {
+  swap: Swap!
+  timestamp: BigInt!
+  volume: BigDecimal!
+}
+
+type DailyVolume implements TradeVolume @entity {
+  id: ID!
+  swap: Swap!
+  timestamp: BigInt!
+  volume: BigDecimal!
+}
+
+type HourlyVolume implements TradeVolume @entity {
+  id: ID!
+  swap: Swap!
+  timestamp: BigInt!
+  volume: BigDecimal!
+}
+
+type WeeklyVolume implements TradeVolume @entity {
+  id: ID!
+  swap: Swap!
+  timestamp: BigInt!
+  volume: BigDecimal!
 }
 
 interface SwapEvent @entity {

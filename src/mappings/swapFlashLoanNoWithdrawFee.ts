@@ -20,12 +20,19 @@ import {
   StopRampAEvent,
   TokenExchange,
 } from "../../generated/schema"
+import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import {
   getBalancesNoWithdrawFee,
   getOrCreateSwapNoWithdrawFee,
 } from "../entities/swap"
+import {
+  getDailyTradeVolume,
+  getHourlyTradeVolume,
+  getWeeklyTradeVolume,
+} from "../entities/volume"
 
-import { BigInt } from "@graphprotocol/graph-ts"
+import { decimal } from "@protofire/subgraph-toolkit"
+import { getOrCreateToken } from "../entities/token"
 import { getSystemInfo } from "../entities/system"
 
 export function handleNewAdminFee(event: NewAdminFee): void {
@@ -289,6 +296,46 @@ export function handleTokenSwap(event: TokenSwap): void {
 
     exchange.save()
 
+    // save trade volume
+    let tokens = swap.tokens
+    if (
+      event.params.soldId.toI32() < tokens.length &&
+      event.params.boughtId.toI32() < tokens.length
+    ) {
+      let soldToken = getOrCreateToken(
+        Address.fromString(tokens[event.params.soldId.toI32()]),
+        event.block,
+        event.transaction,
+      )
+      let sellVolume = decimal.fromBigInt(
+        event.params.tokensSold,
+        soldToken.decimals.toI32(),
+      )
+      let boughtToken = getOrCreateToken(
+        Address.fromString(tokens[event.params.boughtId.toI32()]),
+        event.block,
+        event.transaction,
+      )
+      let buyVolume = decimal.fromBigInt(
+        event.params.tokensBought,
+        boughtToken.decimals.toI32(),
+      )
+      let volume = sellVolume.plus(buyVolume).div(decimal.TWO)
+
+      let hourlyVolume = getHourlyTradeVolume(swap, event.block.timestamp)
+      hourlyVolume.volume = hourlyVolume.volume.plus(volume)
+      hourlyVolume.save()
+
+      let dailyVolume = getDailyTradeVolume(swap, event.block.timestamp)
+      dailyVolume.volume = dailyVolume.volume.plus(volume)
+      dailyVolume.save()
+
+      let weeklyVolume = getWeeklyTradeVolume(swap, event.block.timestamp)
+      weeklyVolume.volume = weeklyVolume.volume.plus(volume)
+      weeklyVolume.save()
+    }
+
+    // update system
     let system = getSystemInfo(event.block, event.transaction)
     system.exchangeCount = system.exchangeCount.plus(BigInt.fromI32(1))
     system.save()
