@@ -213,6 +213,20 @@ type TokenExchange implements Exchange @entity {
   transaction: Bytes!
 }
 
+type TokenExchangeUnderlying implements Exchange @entity {
+  id: ID!
+  swap: Swap!
+  buyer: Bytes!
+  boughtId: BigInt!
+  tokensBought: BigInt!
+  soldId: BigInt!
+  tokensSold: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
 type Token @entity {
   id: ID!
   address: Bytes!
