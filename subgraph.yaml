@@ -336,7 +336,6 @@ dataSources:
         - StopRampAEvent
         - AddLiquidityEvent
         - RemoveLiquidityEvent
-        - FlashLoanEvent
         - TokenExchange
         - TokenExchangeUnderlying
       abis:
