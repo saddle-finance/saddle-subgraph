@@ -7,6 +7,8 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ saddle-finance/saddle",
+    "prepare:mainnet": "cp config/mainnet.subgraph.yaml subgraph.yaml",
+    "prepare:arbitrum": "cp config/arbitrum.subgraph.yaml subgraph.yaml",
     "create-local": "graph create --node http://localhost:8020/ saddle-finance/saddle",
     "remove-local": "graph remove --node http://localhost:8020/ saddle-finance/saddle",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 saddle-finance/saddle"
