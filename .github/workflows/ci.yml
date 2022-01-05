@@ -61,6 +61,9 @@ jobs:
       # fix for forcing git to use https when pulling deps
       - run: 'git config --global --replace-all url."https://github.com/".insteadOf ssh://git@github.com/'
       - run: npm ci
+      # hack to generate types used in mappings
+      - run: npm run prepare:mainnet
+      - run: npm run codegen
       - run: npm run prepare:arbitrum
       - run: npm run codegen
       - run: npm run build
