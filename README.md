@@ -9,6 +9,7 @@ This subgraph provides information about Saddle liquidity pools.
 ### Build
 
 ```bash
+npm run prepare:[networkName]
 npm run codegen
 npm run build
 ```
