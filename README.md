@@ -18,7 +18,7 @@ npm run build
 
 ```bash
 graph auth https://api.thegraph.com/deploy/ <ACCESS_TOKEN>
-npm run deploy
+npm run deploy [subgraph-name] # saddle-finance/saddle or saddle-finance/saddle-arbitrum
 ```
 
 ### Example Queries

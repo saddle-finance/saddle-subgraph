@@ -5,7 +5,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ArbUSDPool
-    network: arbitrum
+    network: arbitrum-one
     source:
       address: "0xBea9F78090bDB9e662d8CB301A00ad09A5b756e9"
       abi: SwapFlashLoanNoWithdrawFee
@@ -56,7 +56,7 @@ dataSources:
 
   - kind: ethereum/contract
     name: "frax-ArbUSD Pool V2"
-    network: arbitrum
+    network: arbitrum-one
     source:
       address: "0xfeEa4D1BacB0519E8f952460A70719944fe56Ee0"
       abi: SwapFlashLoanNoWithdrawFee
