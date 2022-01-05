@@ -53,6 +53,7 @@ dataSources:
         - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
           handler: handleTokenSwap
       file: ./src/mappings/swapFlashLoanNoWithdrawFee.ts
+
   - kind: ethereum/contract
     name: "frax-ArbUSD Pool V2"
     network: arbitrum
