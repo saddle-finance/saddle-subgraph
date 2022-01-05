@@ -6,7 +6,9 @@
     "lint:fix": "eslint src/ --fix && prettier --write src/**/*.ts",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ saddle-finance/saddle",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
+    "prepare:mainnet": "cat config/mainnet.subgraph.yaml > subgraph.yaml",
+    "prepare:arbitrum": "cat config/arbitrum.subgraph.yaml > subgraph.yaml",
     "create-local": "graph create --node http://localhost:8020/ saddle-finance/saddle",
     "remove-local": "graph remove --node http://localhost:8020/ saddle-finance/saddle",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 saddle-finance/saddle"
