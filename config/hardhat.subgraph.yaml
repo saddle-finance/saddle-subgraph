@@ -1,0 +1,367 @@
+specVersion: 0.0.2
+description: An automated market maker for pegged value crypto assets
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ALETHPool
+    network: hardhat
+    source:
+      address: "0xCafac3dD18aC6c6e92c921884f9E4176737C052c"
+      abi: SwapFlashLoanNoWithdrawFee
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - FlashLoanEvent
+        - TokenExchange
+      abis:
+        - name: SwapFlashLoanNoWithdrawFee
+          file: ./abis/SwapFlashLoanNoWithdrawFee.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: FlashLoan(indexed address,uint8,uint256,uint256,uint256)
+          handler: handleFlashLoan
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+      file: ./src/mappings/swapFlashLoanNoWithdrawFee.ts
+
+  - kind: ethereum/contract
+    name: D4Pool
+    network: hardhat
+    source:
+      address: "0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e"
+      abi: SwapFlashLoanNoWithdrawFee
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - FlashLoanEvent
+        - TokenExchange
+      abis:
+        - name: SwapFlashLoanNoWithdrawFee
+          file: ./abis/SwapFlashLoanNoWithdrawFee.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: FlashLoan(indexed address,uint8,uint256,uint256,uint256)
+          handler: handleFlashLoan
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+      file: ./src/mappings/swapFlashLoanNoWithdrawFee.ts
+
+  - kind: ethereum/contract
+    name: USDPoolV2
+    network: hardhat
+    source:
+      address: "0xbf9fBFf01664500A33080Da5d437028b07DFcC55"
+      abi: SwapFlashLoanNoWithdrawFee
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - FlashLoanEvent
+        - TokenExchange
+      abis:
+        - name: SwapFlashLoanNoWithdrawFee
+          file: ./abis/SwapFlashLoanNoWithdrawFee.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: FlashLoan(indexed address,uint8,uint256,uint256,uint256)
+          handler: handleFlashLoan
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+      file: ./src/mappings/swapFlashLoanNoWithdrawFee.ts
+
+  - kind: ethereum/contract
+    name: SUSDMetaPoolV2
+    network: hardhat
+    source:
+      address: "0xdbC43Ba45381e02825b14322cDdd15eC4B3164E6"
+      abi: MetaSwap
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - TokenExchange
+        - TokenExchangeUnderlying
+      abis:
+        - name: MetaSwap
+          file: ./abis/MetaSwap.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+      file: ./src/mappings/metaSwap.ts
+
+  - kind: ethereum/contract
+    name: BTCPoolV2
+    network: hardhat
+    source:
+      address: "0x93b6BDa6a0813D808d75aA42e900664Ceb868bcF"
+      abi: SwapFlashLoanNoWithdrawFee
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - FlashLoanEvent
+        - TokenExchange
+      abis:
+        - name: SwapFlashLoanNoWithdrawFee
+          file: ./abis/SwapFlashLoanNoWithdrawFee.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: FlashLoan(indexed address,uint8,uint256,uint256,uint256)
+          handler: handleFlashLoan
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+      file: ./src/mappings/swapFlashLoanNoWithdrawFee.ts
+
+  - kind: ethereum/contract
+    name: TBTCMetaPoolV2
+    network: hardhat
+    source:
+      address: "0x6c8D53600C7f8F97ed32e6162867F3340dE3Ab37"
+      abi: MetaSwap
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - TokenExchange
+        - TokenExchangeUnderlying
+      abis:
+        - name: MetaSwap
+          file: ./abis/MetaSwap.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+      file: ./src/mappings/metaSwap.ts
+
+  - kind: ethereum/contract
+    name: WCUSDMetaPoolV2
+    network: hardhat
+    source:
+      address: "0x8D03623d799E93E53FeDf96aF88e2879bA1804FA"
+      abi: MetaSwap
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - TokenExchange
+        - TokenExchangeUnderlying
+      abis:
+        - name: MetaSwap
+          file: ./abis/MetaSwap.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+      file: ./src/mappings/metaSwap.ts
