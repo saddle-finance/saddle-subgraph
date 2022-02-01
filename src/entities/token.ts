@@ -1,13 +1,12 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
 
-import { ERC20 } from "../../generated/USDPool/ERC20"
+import { ERC20 } from "../../generated/PoolRegistry/ERC20"
 import { Token } from "../../generated/schema"
 import { getSystemInfo } from "./system"
 
 export function getOrCreateToken(
   address: Address,
-  block: ethereum.Block,
-  tx: ethereum.Transaction,
+  event: ethereum.Event,
 ): Token {
   let token = Token.load(address.toHexString())
 
@@ -25,7 +24,7 @@ export function getOrCreateToken(
     token.decimals = BigInt.fromI32(decimals.reverted ? 18 : decimals.value)
     token.save()
 
-    let system = getSystemInfo(block, tx)
+    let system = getSystemInfo(event.block, event.transaction)
     system.tokenCount = system.tokenCount.plus(BigInt.fromI32(1))
     system.save()
   }

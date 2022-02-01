@@ -1,6 +1,8 @@
 type SystemInfo @entity {
   id: ID!
 
+  poolRegistryContract: Bytes
+
   exchangeCount: BigInt!
   swapCount: BigInt!
   tokenCount: BigInt!
@@ -11,31 +13,56 @@ type SystemInfo @entity {
 }
 
 type Swap @entity {
+  " Pool address "
   id: ID!
+
+  " Pool's human-readable name "
+  name: String!
+
+  " Reference asset type "
+  assetType: AssetType
+
+  " Identify whether pool is a metapool "
+  isMeta: Boolean!
+
+  " Registry contract address from where this pool was registered "
+  registryAddress: Bytes!
 
   # swap address
   address: Bytes!
 
-  # number of tokens supported
-  numTokens: Int!
-
-  # supported tokens
-  tokens: [Token!]!
-
-  # token balances
-  balances: [BigInt!]!
-
-  # liquidity provider token
+  " Address of the token representing LP share TODO: use LPToken"
   lpToken: Bytes!
+
+  " Number of coins in the pool "
+  coinCount: BigInt!
+
+  " List of the swappable coins within the pool "
+  coins: [Coin!] @derivedFrom(field: "swap")
+
+  " Number of underlying coins in the pool "
+  underlyingCount: BigInt!
+
+  " List of the swappable underlying coins within the pool "
+  underlyingCoins: [UnderlyingCoin!] @derivedFrom(field: "swap")
 
   # amplification coefficient
   A: BigInt!
 
   swapFee: BigInt!
+  " Admin fee is represented as a percentage of the total fee collected on a swap "
   adminFee: BigInt!
-  withdrawFee: BigInt!
-
   virtualPrice: BigInt!
+
+  paused: Boolean!
+
+  addedAt: BigInt!
+  addedAtBlock: BigInt!
+  addedAtTransaction: Bytes!
+
+  removedAt: BigInt
+  removedAtBlock: BigInt
+  removedAtTransaction: Bytes
 
   # owner address
   owner: Bytes!
@@ -43,6 +70,8 @@ type Swap @entity {
   events: [SwapEvent!] @derivedFrom(field: "swap")
 
   exchanges: [Exchange!] @derivedFrom(field: "swap")
+
+  exchangeCount: BigInt
 
   # cumulative hourly trade volume
   hourlyVolumes: [HourlyVolume!] @derivedFrom(field: "swap")
@@ -52,6 +81,15 @@ type Swap @entity {
 
   # cumulative weekly trade volume
   weeklyVolumes: [WeeklyVolume!] @derivedFrom(field: "swap")
+}
+
+type LpToken @entity {
+  id: ID!
+  address: Bytes!
+  decimals: BigInt!
+  name: String
+  symbol: String
+  swap: Swap
 }
 
 interface TradeVolume @entity {
@@ -93,6 +131,35 @@ type NewAdminFeeEvent implements SwapEvent @entity {
   id: ID!
   swap: Swap!
   newFee: BigInt!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type OwnershipTransferredEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+  previousOwner: Bytes!
+  newOwner: Bytes!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type PausedEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
+
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+}
+
+type UnpausedEvent implements SwapEvent @entity {
+  id: ID!
+  swap: Swap!
 
   block: BigInt!
   timestamp: BigInt!
@@ -189,10 +256,10 @@ interface Exchange {
   swap: Swap!
 
   buyer: Bytes!
-  soldId: BigInt!
-  tokensSold: BigInt!
-  boughtId: BigInt!
-  tokensBought: BigInt!
+  tokenSold: Token!
+  tokenBought: Token!
+  amountSold: BigDecimal!
+  amountBought: BigDecimal!
 
   block: BigInt!
   timestamp: BigInt!
@@ -203,10 +270,10 @@ type TokenExchange implements Exchange @entity {
   id: ID!
   swap: Swap!
   buyer: Bytes!
-  boughtId: BigInt!
-  tokensBought: BigInt!
-  soldId: BigInt!
-  tokensSold: BigInt!
+  tokenSold: Token!
+  tokenBought: Token!
+  amountSold: BigDecimal!
+  amountBought: BigDecimal!
 
   block: BigInt!
   timestamp: BigInt!
@@ -217,20 +284,76 @@ type TokenExchangeUnderlying implements Exchange @entity {
   id: ID!
   swap: Swap!
   buyer: Bytes!
-  boughtId: BigInt!
-  tokensBought: BigInt!
-  soldId: BigInt!
-  tokensSold: BigInt!
+  tokenSold: Token!
+  tokenBought: Token!
+  amountSold: BigDecimal!
+  amountBought: BigDecimal!
 
   block: BigInt!
   timestamp: BigInt!
   transaction: Bytes!
 }
 
+" Representation of canonical ERC20s "
 type Token @entity {
   id: ID!
   address: Bytes!
   decimals: BigInt!
   name: String
   symbol: String
+
+  swaps: [Swap!]
+
+  coins: [Coin!] @derivedFrom(field: "token")
+
+  underlyingCoins: [UnderlyingCoin!] @derivedFrom(field: "token")
+}
+
+" Basically a Pool-Token join table "
+type Coin @entity {
+  " Equals to: <pool_id>-<coin_index>"
+  id: ID!
+
+  " Coin index "
+  index: Int!
+
+  swap: Swap!
+
+  token: Token!
+
+  underlying: UnderlyingCoin!
+
+  balance: BigDecimal!
+
+  updated: BigInt!
+  updatedAtBlock: BigInt!
+  updatedAtTransaction: Bytes!
+}
+
+" Basically a Pool-Token join table "
+type UnderlyingCoin @entity {
+  " Equals to: <pool_id>-<coin_index>"
+  id: ID!
+
+  " Coin index "
+  index: Int!
+
+  swap: Swap!
+
+  token: Token!
+
+  coin: Coin!
+
+  balance: BigDecimal!
+
+  updated: BigInt!
+  updatedAtBlock: BigInt!
+  updatedAtTransaction: Bytes!
+}
+
+enum AssetType {
+  BTC
+  ETH
+  USD
+  OTHER
 }
