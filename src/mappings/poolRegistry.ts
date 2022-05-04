@@ -1,4 +1,8 @@
-import { AddPool, RemovePool } from "../../generated/PoolRegistry/PoolRegistry"
+import {
+  AddPool,
+  RemovePool,
+  UpdatePool,
+} from "../../generated/PoolRegistry/PoolRegistry"
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
 
 import { Swap } from "../../generated/schema"
@@ -13,7 +17,7 @@ export function handleRemovePool(event: RemovePool): void {
   removePool(event.params.poolAddress, event)
 }
 
-export function handleUpdatePool(): void {
+export function handleUpdatePool(event: UpdatePool): void {
   // TODO event: UpdatePool
 }
 

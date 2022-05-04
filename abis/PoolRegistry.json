@@ -12,7 +12,7 @@
         "type": "address"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "constructor"
   },
   {
@@ -58,12 +58,12 @@
             "type": "address"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "tokens",
             "type": "address[]"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "underlyingTokens",
             "type": "address[]"
           },
@@ -78,9 +78,9 @@
             "type": "address"
           },
           {
-            "internalType": "uint80",
+            "internalType": "uint72",
             "name": "pid",
-            "type": "uint80"
+            "type": "uint72"
           },
           {
             "internalType": "bool",
@@ -90,6 +90,103 @@
           {
             "internalType": "bool",
             "name": "isRemoved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
+            "type": "bool"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct IPoolRegistry.PoolData",
+        "name": "poolData",
+        "type": "tuple"
+      }
+    ],
+    "name": "AddCommunityPool",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "poolAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "poolAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "lpToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "typeOfAsset",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "poolName",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "targetAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "underlyingTokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "basePoolAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "metaSwapDepositAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint72",
+            "name": "pid",
+            "type": "uint72"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSaddleApproved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isRemoved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
             "type": "bool"
           }
         ],
@@ -239,12 +336,12 @@
             "type": "address"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "tokens",
             "type": "address[]"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "underlyingTokens",
             "type": "address[]"
           },
@@ -259,9 +356,9 @@
             "type": "address"
           },
           {
-            "internalType": "uint80",
+            "internalType": "uint72",
             "name": "pid",
-            "type": "uint80"
+            "type": "uint72"
           },
           {
             "internalType": "bool",
@@ -271,6 +368,11 @@
           {
             "internalType": "bool",
             "name": "isRemoved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
             "type": "bool"
           }
         ],
@@ -345,6 +447,86 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "lpToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "typeOfAsset",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "poolName",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "targetAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "underlyingTokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "basePoolAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "metaSwapDepositAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint72",
+            "name": "pid",
+            "type": "uint72"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSaddleApproved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isRemoved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct IPoolRegistry.PoolData",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "name": "addCommunityPool",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "poolAddress",
+            "type": "address"
+          },
+          {
             "internalType": "uint8",
             "name": "typeOfAsset",
             "type": "uint8"
@@ -365,9 +547,9 @@
             "type": "address"
           },
           {
-            "internalType": "uint80",
+            "internalType": "uint72",
             "name": "pid",
-            "type": "uint80"
+            "type": "uint72"
           },
           {
             "internalType": "bool",
@@ -378,6 +560,11 @@
             "internalType": "bool",
             "name": "isRemoved",
             "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
+            "type": "bool"
           }
         ],
         "internalType": "struct IPoolRegistry.PoolInputData",
@@ -387,7 +574,7 @@
     ],
     "name": "addPool",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -400,7 +587,25 @@
     ],
     "name": "approvePool",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "calls",
+        "type": "bytes[]"
+      },
+      {
+        "internalType": "bool",
+        "name": "revertOnFail",
+        "type": "bool"
+      }
+    ],
+    "name": "batch",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -417,97 +622,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "poolAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getAdminFee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "adminFee",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "poolAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getUnderlyingBalances",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "tokens",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "balances",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "poolAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getBalances",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "tokens",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "balances",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "poolAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getBalances",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "tokens",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "balances",
-        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -594,12 +708,12 @@
             "type": "address"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "tokens",
             "type": "address[]"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "underlyingTokens",
             "type": "address[]"
           },
@@ -614,9 +728,9 @@
             "type": "address"
           },
           {
-            "internalType": "uint80",
+            "internalType": "uint72",
             "name": "pid",
-            "type": "uint80"
+            "type": "uint72"
           },
           {
             "internalType": "bool",
@@ -626,6 +740,11 @@
           {
             "internalType": "bool",
             "name": "isRemoved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
             "type": "bool"
           }
         ],
@@ -675,12 +794,12 @@
             "type": "address"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "tokens",
             "type": "address[]"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "underlyingTokens",
             "type": "address[]"
           },
@@ -695,9 +814,9 @@
             "type": "address"
           },
           {
-            "internalType": "uint80",
+            "internalType": "uint72",
             "name": "pid",
-            "type": "uint80"
+            "type": "uint72"
           },
           {
             "internalType": "bool",
@@ -707,6 +826,97 @@
           {
             "internalType": "bool",
             "name": "isRemoved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct IPoolRegistry.PoolData",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "poolName",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getPoolDataByName",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "poolAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "lpToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint8",
+            "name": "typeOfAsset",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "poolName",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "targetAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "contract IERC20[]",
+            "name": "underlyingTokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "basePoolAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "metaSwapDepositAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint72",
+            "name": "pid",
+            "type": "uint72"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSaddleApproved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isRemoved",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
             "type": "bool"
           }
         ],
@@ -801,12 +1011,49 @@
         "type": "address"
       }
     ],
-    "name": "getSwapFee",
+    "name": "getSwapStorage",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "swapFee",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "initialA",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "futureA",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "initialATime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "futureATime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "swapFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "adminFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "lpToken",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IPoolRegistry.SwapStorageData",
+        "name": "swapStorageData",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -820,42 +1067,12 @@
         "type": "address"
       }
     ],
-    "name": "getSwapStorage",
+    "name": "getTokenBalances",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "initialA",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "futureA",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "initialATime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "futureATime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "swapFee",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "adminFee",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "lpToken",
-        "type": "address"
+        "internalType": "uint256[]",
+        "name": "balances",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -872,9 +1089,28 @@
     "name": "getTokens",
     "outputs": [
       {
-        "internalType": "address[]",
-        "name": "",
+        "internalType": "contract IERC20[]",
+        "name": "tokens",
         "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "poolAddress",
+        "type": "address"
+      }
+    ],
+    "name": "getUnderlyingTokenBalances",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "balances",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -891,8 +1127,8 @@
     "name": "getUnderlyingTokens",
     "outputs": [
       {
-        "internalType": "address[]",
-        "name": "",
+        "internalType": "contract IERC20[]",
+        "name": "underlyingTokens",
         "type": "address[]"
       }
     ],
@@ -1008,7 +1244,7 @@
     ],
     "name": "removePool",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -1077,12 +1313,12 @@
             "type": "address"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "tokens",
             "type": "address[]"
           },
           {
-            "internalType": "address[]",
+            "internalType": "contract IERC20[]",
             "name": "underlyingTokens",
             "type": "address[]"
           },
@@ -1097,9 +1333,9 @@
             "type": "address"
           },
           {
-            "internalType": "uint80",
+            "internalType": "uint72",
             "name": "pid",
-            "type": "uint80"
+            "type": "uint72"
           },
           {
             "internalType": "bool",
@@ -1110,6 +1346,11 @@
             "internalType": "bool",
             "name": "isRemoved",
             "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isGuarded",
+            "type": "bool"
           }
         ],
         "internalType": "struct IPoolRegistry.PoolData",
@@ -1119,7 +1360,7 @@
     ],
     "name": "updatePool",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   }
 ]

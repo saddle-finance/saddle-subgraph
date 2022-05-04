@@ -4,12 +4,14 @@ import {
   DataSourceContext,
   dataSource,
   ethereum,
+  log,
 } from "@graphprotocol/graph-ts"
 
 import { Pool } from "../../generated/PoolRegistry/Pool"
 import { Pool as PoolDataSource } from "../../generated/templates"
 import { PoolRegistry } from "../../generated/PoolRegistry/PoolRegistry"
 import { Swap } from "../../generated/schema"
+import { getOrCreateLpToken } from "./token"
 import { getSystemInfo } from "./system"
 import { saveCoins } from "./coins"
 
@@ -17,11 +19,13 @@ export function getOrCreateSwap(address: Address, event: ethereum.Event): Swap {
   let swap = Swap.load(address.toHexString())
 
   if (swap == null) {
+    // TODO dataSource.address() only works when Registry fired the event
     let poolRegistryContract = PoolRegistry.bind(dataSource.address())
     let poolContract = Pool.bind(address)
 
-    // Addresses etc
     swap = new Swap(address.toHexString())
+
+    // Addresses etc
     swap.address = poolContract._address
     swap.registryAddress = poolRegistryContract._address
 
@@ -32,7 +36,11 @@ export function getOrCreateSwap(address: Address, event: ethereum.Event): Swap {
       swap.name = poolData.value.poolName.toString()
       // TODO replace with registry fn
       swap.isMeta = poolData.value.metaSwapDepositAddress != Address.zero()
-      swap.lpToken = poolData.value.lpToken
+      let lpToken = getOrCreateLpToken(poolData.value.lpToken)
+      lpToken.swap = swap.id
+
+      swap.lpToken = lpToken.id
+      swap.depositAddress = poolData.value.metaSwapDepositAddress
       let assetType = poolData.value.typeOfAsset
       if (assetType === 0) {
         swap.assetType = "BTC"
@@ -56,25 +64,24 @@ export function getOrCreateSwap(address: Address, event: ethereum.Event): Swap {
     }
 
     // Pool parameters
-    let A = poolRegistryContract.try_getA(address)
-    let swapFee = poolRegistryContract.try_getSwapFee(address)
-    let adminFee = poolRegistryContract.try_getAdminFee(address)
-    let paused = poolRegistryContract.try_getPaused(address)
-    let virtualPrice = poolRegistryContract.try_getVirtualPrice(address)
+    // TODO: see if it's possible to do this via registry
+    let A = poolContract.try_getA()
+    let paused = poolContract.try_paused()
+    let virtualPrice = poolContract.try_getVirtualPrice()
+    let swapStorage = poolContract.try_swapStorage()
+
     if (!A.reverted) {
       swap.A = A.value
-    }
-    if (!swapFee.reverted) {
-      swap.swapFee = swapFee.value
-    }
-    if (!adminFee.reverted) {
-      swap.adminFee = adminFee.value
     }
     if (!paused.reverted) {
       swap.paused = paused.value
     }
     if (!virtualPrice.reverted) {
       swap.virtualPrice = virtualPrice.value
+    }
+    if (!swapStorage.reverted) {
+      swap.swapFee = swapStorage.value.value4
+      swap.adminFee = swapStorage.value.value5
     }
 
     // Save new pool entity
@@ -93,6 +100,10 @@ export function getOrCreateSwap(address: Address, event: ethereum.Event): Swap {
     context.setBytes("registry", poolRegistryContract._address)
 
     PoolDataSource.createWithContext(address, context)
+    log.info("Swap Created {} {}", [
+      poolData.reverted ? "MISSING-NAME" : poolData.value.poolName.toString(),
+      address.toHexString(),
+    ])
   }
 
   return swap as Swap

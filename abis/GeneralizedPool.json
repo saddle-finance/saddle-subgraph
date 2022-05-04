@@ -428,6 +428,38 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "flashLoanFeeBPS",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newFlashLoanFeeBPS",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newProtocolFeeShareBPS",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFlashLoanFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

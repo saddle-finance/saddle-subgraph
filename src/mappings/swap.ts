@@ -32,7 +32,13 @@ import {
   UnderlyingCoin,
   UnpausedEvent,
 } from "../../generated/schema"
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
+import {
+  Address,
+  BigInt,
+  dataSource,
+  ethereum,
+  log,
+} from "@graphprotocol/graph-ts"
 import { decimal, integer } from "@protofire/subgraph-toolkit"
 import {
   getDailyTradeVolume,
@@ -41,11 +47,14 @@ import {
 } from "../entities/volume"
 
 import { Pool } from "../../generated/PoolRegistry/Pool"
+import { PoolRegistry } from "../../generated/PoolRegistry/PoolRegistry"
+import { getOrCreateLpToken } from "../entities/token"
+import { getOrCreateSwap } from "../entities/swap"
 import { getSystemInfo } from "../entities/system"
 import { saveCoins } from "../entities/coins"
 
 export function handleNewAdminFee(event: NewAdminFee): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap.adminFee = event.params.newAdminFee
     swap.save()
@@ -64,7 +73,7 @@ export function handleNewAdminFee(event: NewAdminFee): void {
 }
 
 export function handleNewSwapFee(event: NewSwapFee): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap.swapFee = event.params.newSwapFee
     swap.save()
@@ -83,7 +92,7 @@ export function handleNewSwapFee(event: NewSwapFee): void {
 }
 
 export function handleRampA(event: RampA): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     let log = new RampAEvent("ramp_A-" + getEventId(event))
 
@@ -102,7 +111,7 @@ export function handleRampA(event: RampA): void {
 }
 
 export function handleStopRampA(event: StopRampA): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap.A = event.params.currentA
     swap.save()
@@ -122,7 +131,7 @@ export function handleStopRampA(event: StopRampA): void {
 }
 
 export function handlePaused(event: Paused): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap.paused = true
     swap.save()
@@ -140,7 +149,7 @@ export function handlePaused(event: Paused): void {
 }
 
 export function handleUnpaused(event: Unpaused): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap.paused = false
     swap.save()
@@ -158,7 +167,7 @@ export function handleUnpaused(event: Unpaused): void {
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap.owner = event.params.newOwner
     swap.save()
@@ -180,7 +189,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {
 }
 
 export function handleFlashLoan(event: FlashLoan): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap = getPoolSnapshot(swap, event)
 
@@ -203,7 +212,7 @@ export function handleFlashLoan(event: FlashLoan): void {
 }
 
 export function handleAddLiquidity(event: AddLiquidity): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
 
   if (swap != null) {
     swap = getPoolSnapshot(swap, event)
@@ -225,7 +234,7 @@ export function handleAddLiquidity(event: AddLiquidity): void {
 }
 
 export function handleRemoveLiquidity(event: RemoveLiquidity): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
 
   if (swap != null) {
     swap = getPoolSnapshot(swap, event)
@@ -247,7 +256,7 @@ export function handleRemoveLiquidity(event: RemoveLiquidity): void {
 }
 
 export function handleRemoveLiquidityOne(event: RemoveLiquidityOne): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
   if (swap != null) {
     swap = getPoolSnapshot(swap, event)
 
@@ -280,7 +289,7 @@ export function handleRemoveLiquidityOne(event: RemoveLiquidityOne): void {
 export function handleRemoveLiquidityImbalance(
   event: RemoveLiquidityImbalance,
 ): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
 
   if (swap != null) {
     swap = getPoolSnapshot(swap, event)
@@ -306,7 +315,7 @@ export function handleRemoveLiquidityImbalance(
 }
 
 export function handleTokenSwap(event: TokenSwap): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
 
   if (swap != null) {
     swap = getPoolSnapshot(swap, event)
@@ -330,7 +339,7 @@ export function handleTokenSwap(event: TokenSwap): void {
     )
 
     let exchange = new TokenExchange("token_exchange-" + getEventId(event))
-
+    //dyFee = dy.mul(self.swapFee).div(FEE_DENOMINATOR);
     exchange.swap = swap.id
     exchange.buyer = event.params.buyer
     exchange.tokenSold = tokenSold.id
@@ -371,7 +380,7 @@ export function handleTokenSwap(event: TokenSwap): void {
 }
 
 export function handleTokenSwapUnderlying(event: TokenSwapUnderlying): void {
-  let swap = Swap.load(event.address.toHexString())
+  let swap = getOrCreateSwap(event.address, event)
 
   if (swap != null) {
     swap = getPoolSnapshot(swap, event)
@@ -442,20 +451,49 @@ function getEventId(event: ethereum.Event): string {
   return event.transaction.hash.toHexString() + "-" + event.logIndex.toString()
 }
 
-function getPoolSnapshot(pool: Swap, event: ethereum.Event): Swap {
-  if (pool != null) {
-    let poolContract = Pool.bind(pool.address as Address)
-
+function getPoolSnapshot(swap: Swap, event: ethereum.Event): Swap {
+  if (swap != null) {
+    let context = dataSource.context()
+    let registryAddress = context.getBytes("registry") as Address
+    let poolRegistryContract = PoolRegistry.bind(registryAddress)
+    let poolContract = Pool.bind(changetype<Address>(swap.address))
+    log.info("getPoolSnapshot, registryAddr: {}", [
+      registryAddress.toHexString(),
+    ])
     // Update coin balances and underlying coin balances/rates
-    saveCoins(pool, event)
+    saveCoins(swap, event)
 
     // Save current virtual price
     let virtualPrice = poolContract.try_getVirtualPrice()
 
     if (!virtualPrice.reverted) {
-      pool.virtualPrice = virtualPrice.value
+      swap.virtualPrice = virtualPrice.value
+    }
+
+    if (poolContract._address !== poolRegistryContract._address) {
+      let poolData = poolRegistryContract.try_getPoolData(poolContract._address)
+      if (!poolData.reverted) {
+        swap.name = poolData.value.poolName.toString()
+        // TODO replace with registry fn
+        swap.isMeta = poolData.value.metaSwapDepositAddress != Address.zero()
+        let lpToken = getOrCreateLpToken(poolData.value.lpToken)
+        lpToken.swap = swap.id
+
+        swap.lpToken = lpToken.id
+        swap.depositAddress = poolData.value.metaSwapDepositAddress
+        let assetType = poolData.value.typeOfAsset
+        if (assetType === 0) {
+          swap.assetType = "BTC"
+        } else if (assetType === 1) {
+          swap.assetType = "ETH"
+        } else if (assetType === 2) {
+          swap.assetType = "USD"
+        } else {
+          swap.assetType = "OTHER"
+        }
+      }
     }
   }
 
-  return pool
+  return swap
 }
