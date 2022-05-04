@@ -1,0 +1,78 @@
+{
+  "network": "hardhat",
+  "masterRegistry": {
+    "address": "0x367761085BF3C12e5DA2Df99AC6E1a824612b8fb",
+    "startBlock": 104
+  },
+  "poolRegistry": {
+    "address": "0x1c85638e118b37167e9298c2268758e058DdfDA0",
+    "startBlock": 103
+  },
+  "existingPools": [
+    {
+      "name": "SaddleALETHPool",
+      "address": "0xCafac3dD18aC6c6e92c921884f9E4176737C052c",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleBTCPoolV2",
+      "address": "0x93b6BDa6a0813D808d75aA42e900664Ceb868bcF",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleD4Pool",
+      "address": "0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleTBTCMetaPool",
+      "address": "0xA22D78bc37cE77FeE1c44F0C2C0d2524318570c3",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleTBTCMetaPoolUpdated",
+      "address": "0x6c8D53600C7f8F97ed32e6162867F3340dE3Ab37",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleUSDPool",
+      "address": "0x98A0Bc3f9FdAD482CB2e40dE1291f8b0A6FE1860",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleUSDPoolV2",
+      "address": "0xbf9fBFf01664500A33080Da5d437028b07DFcC55",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleVETH2Pool",
+      "address": "0x6F62d12568c81Dc0fb38426B7Cdba2d265f89B29",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleWCUSDMetaPoolUpdated",
+      "address": "0x8D03623d799E93E53FeDf96aF88e2879bA1804FA",
+      "startBlock": 0
+    },
+    {
+      "name": "SaddleBTCPool",
+      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      "startBlock": 25
+    },
+    {
+      "name": "SaddleSUSDMetaPool",
+      "address": "0x9d4454B023096f34B160D6B654540c56A1F81688",
+      "startBlock": 60
+    },
+    {
+      "name": "SaddleWCUSDMetaPool",
+      "address": "0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f",
+      "startBlock": 76
+    },
+    {
+      "name": "SaddleSUSDMetaPoolUpdated",
+      "address": "0xdbC43Ba45381e02825b14322cDdd15eC4B3164E6",
+      "startBlock": 82
+    }
+  ]
+}

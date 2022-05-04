@@ -1,0 +1,10 @@
+{
+  "network": "fantom_mainnet",
+  "existingPools": [
+    {
+      "name": "SaddleFtmUSDPool",
+      "address": "0xBea9F78090bDB9e662d8CB301A00ad09A5b756e9",
+      "startBlock": -1
+    }
+  ]
+}

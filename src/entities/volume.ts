@@ -27,7 +27,7 @@ export function getHourlyTradeVolume(
     volume.volume = decimal.ZERO
   }
 
-  return volume!
+  return volume
 }
 
 export function getDailyTradeVolume(
@@ -47,7 +47,7 @@ export function getDailyTradeVolume(
     volume.volume = decimal.ZERO
   }
 
-  return volume!
+  return volume
 }
 
 export function getWeeklyTradeVolume(
@@ -67,5 +67,5 @@ export function getWeeklyTradeVolume(
     volume.volume = decimal.ZERO
   }
 
-  return volume!
+  return volume
 }

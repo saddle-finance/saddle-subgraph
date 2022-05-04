@@ -369,6 +369,59 @@ dataSources:
       file: ./src/mappings/metaSwap.ts
 
   - kind: ethereum/contract
+    name: SUSDMetaPoolV2
+    network: mainnet
+    source:
+      address: "0x824dcD7b044D60df2e89B1bB888e66D8BCf41491"
+      abi: MetaSwap
+      startBlock: 13806669
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - TokenExchange
+        - TokenExchangeUnderlying
+      abis:
+        - name: MetaSwap
+          file: ./abis/MetaSwap.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+      file: ./src/mappings/metaSwap.ts
+
+  - kind: ethereum/contract
     name: BTCPoolV2
     network: mainnet
     source:
@@ -473,12 +526,118 @@ dataSources:
       file: ./src/mappings/metaSwap.ts
 
   - kind: ethereum/contract
+    name: TBTCMetaPoolV2
+    network: mainnet
+    source:
+      address: "0xA0b4a2667dD60d5CdD7EcFF1084F0CeB8dD84326"
+      abi: MetaSwap
+      startBlock: 13806917
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - TokenExchange
+        - TokenExchangeUnderlying
+      abis:
+        - name: MetaSwap
+          file: ./abis/MetaSwap.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+      file: ./src/mappings/metaSwap.ts
+
+  - kind: ethereum/contract
     name: WCUSDMetaPool
     network: mainnet
     source:
       address: "0x3F1d224557afA4365155ea77cE4BC32D5Dae2174"
       abi: MetaSwap
       startBlock: 13156995
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+        - SystemInfo
+        - Token
+        - NewAdminFeeEvent
+        - NewSwapFeeEvent
+        - RampAEvent
+        - StopRampAEvent
+        - AddLiquidityEvent
+        - RemoveLiquidityEvent
+        - TokenExchange
+        - TokenExchangeUnderlying
+      abis:
+        - name: MetaSwap
+          file: ./abis/MetaSwap.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+      file: ./src/mappings/metaSwap.ts
+
+  - kind: ethereum/contract
+    name: WCUSDMetaPoolV2
+    network: mainnet
+    source:
+      address: "0xc02D481B52Ae04Ebc76a8882441cfAED45eb8342"
+      abi: MetaSwap
+      startBlock: 13806922
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

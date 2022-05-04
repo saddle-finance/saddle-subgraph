@@ -1,0 +1,70 @@
+{
+  "network": "mainnet",
+  "existingPools": [
+    {
+      "name": "BTCPool",
+      "address": "0x4f6A43Ad7cba042606dECaCA730d4CE0A57ac62e",
+      "startBlock": 11685572
+    },
+    {
+      "name": "USDPool",
+      "address": "0x3911F80530595fBd01Ab1516Ab61255d75AEb066",
+      "startBlock": 12066229
+    },
+    {
+      "name": "VETH2Pool",
+      "address": "0xdec2157831D6ABC3Ec328291119cc91B337272b5",
+      "startBlock": 12195714
+    },
+    {
+      "name": "ALETHPool",
+      "address": "0xa6018520EAACC06C30fF2e1B3ee2c7c22e64196a",
+      "startBlock": 12634694
+    },
+    {
+      "name": "D4Pool",
+      "address": "0xC69DDcd4DFeF25D8a793241834d4cc4b3668EAD6",
+      "startBlock": 12701652
+    },
+    {
+      "name": "USDPoolV2",
+      "address": "0xaCb83E0633d6605c5001e2Ab59EF3C745547C8C7",
+      "startBlock": 12827153
+    },
+    {
+      "name": "SUSDMetaPool",
+      "address": "0x0C8BAe14c9f9BF2c953997C881BEfaC7729FD314",
+      "startBlock": 12912720
+    },
+    {
+      "name": "SUSDMetaPoolV2",
+      "address": "0x824dcD7b044D60df2e89B1bB888e66D8BCf41491",
+      "startBlock": 13806669
+    },
+    {
+      "name": "BTCPoolV2",
+      "address": "0xdf3309771d2BF82cb2B6C56F9f5365C8bD97c4f2",
+      "startBlock": 13083826
+    },
+    {
+      "name": "TBTCMetaPool",
+      "address": "0xf74ebe6e5586275dc4CeD78F5DBEF31B1EfbE7a5",
+      "startBlock": 13130191
+    },
+    {
+      "name": "TBTCMetaPoolV2",
+      "address": "0xA0b4a2667dD60d5CdD7EcFF1084F0CeB8dD84326",
+      "startBlock": 13806917
+    },
+    {
+      "name": "WCUSDMetaPool",
+      "address": "0x3F1d224557afA4365155ea77cE4BC32D5Dae2174",
+      "startBlock": 13156995
+    },
+    {
+      "name": "WCUSDMetaPoolV2",
+      "address": "0xc02D481B52Ae04Ebc76a8882441cfAED45eb8342",
+      "startBlock": 13806922
+    }
+  ]
+}

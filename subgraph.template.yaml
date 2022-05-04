@@ -1,0 +1,158 @@
+specVersion: 0.0.2
+description: An automated market maker for pegged value crypto assets
+schema:
+  file: ./schema.graphql
+templates:
+  - kind: ethereum/contract
+    name: Pool
+    network: {{network}}
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/swap.ts
+      entities: []
+      abis:
+        - name: Pool
+          file: ./abis/GeneralizedPool.json
+        - name: PoolRegistry
+          file: ./abis/PoolRegistry.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: FlashLoan(indexed address,uint8,uint256,uint256,uint256)
+          handler: handleFlashLoan
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+        - event: Paused(address)
+          handler: handlePaused
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+
+dataSources:
+  - name: MasterRegistry
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: MasterRegistry
+      address: "{{masterRegistry.address}}"
+      startBlock: {{masterRegistry.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/masterRegistry.ts
+      entities:
+        - SystemState
+      abis:
+        - name: MasterRegistry
+          file: ./abis/MasterRegistry.json
+      eventHandlers:
+        - event: AddRegistry(indexed bytes32,address,uint256)
+          handler: handleAddRegistry
+
+  - name: PoolRegistry
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: PoolRegistry
+      address: "{{poolRegistry.address}}"
+      startBlock: {{poolRegistry.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/poolRegistry.ts
+      entities:
+        - Swap
+      abis:
+        - name: PoolRegistry
+          file: ./abis/PoolRegistry.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: Pool
+          file: ./abis/GeneralizedPool.json
+      eventHandlers:
+        - event: AddPool(indexed address,uint256,(address,address,uint8,bytes32,address,address[],address[],address,address,uint72,bool,bool,bool))
+          handler: handleAddPool
+        - event: AddCommunityPool(indexed address,uint256,(address,address,uint8,bytes32,address,address[],address[],address,address,uint72,bool,bool,bool))
+          handler: handleAddPool
+        - event: RemovePool(indexed address,uint256)
+          handler: handleRemovePool
+        - event: UpdatePool(indexed address,uint256,(address,address,uint8,bytes32,address,address[],address[],address,address,uint72,bool,bool,bool))
+          handler: handleUpdatePool
+
+  {{#existingPools}}
+  - kind: ethereum/contract
+    name: {{name}}
+    network: {{network}}
+    source:
+      abi: Pool
+      address: "{{address}}"
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/swap.ts
+      entities: []
+      abis:
+        - name: Pool
+          file: ./abis/GeneralizedPool.json
+        - name: PoolRegistry
+          file: ./abis/PoolRegistry.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdminFee(uint256)
+          handler: handleNewAdminFee
+        - event: NewSwapFee(uint256)
+          handler: handleNewSwapFee
+        - event: RampA(uint256,uint256,uint256,uint256)
+          handler: handleRampA
+        - event: StopRampA(uint256,uint256)
+          handler: handleStopRampA
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: FlashLoan(indexed address,uint8,uint256,uint256,uint256)
+          handler: handleFlashLoan
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwap
+        - event: TokenSwapUnderlying(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleTokenSwapUnderlying
+        - event: Paused(address)
+          handler: handlePaused
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+
+  {{/existingPools}}
